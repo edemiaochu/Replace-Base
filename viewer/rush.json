@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.172.0",
+  "pnpmVersion": "7.32.2",
+  "nodeSupportedVersionRange": "^20.19.0 || ^22.12.0",
+  "projectFolderMinDepth": 2,
+  "projectFolderMaxDepth": 3,
+  "repository": {
+    "url": "https://github.com/itwin/viewer",
+    "defaultBranch": "master"
+  },
+  "projects": [
+    {
+      "packageName": "@szewtwin/viewer-react",
+      "projectFolder": "packages/modules/viewer-react",
+      "shouldPublish": true,
+      "reviewCategory": "common"
+    },
+    {
+      "packageName": "@szewtwin/desktop-viewer-react",
+      "projectFolder": "packages/modules/desktop-viewer-react",
+      "shouldPublish": true,
+      "reviewCategory": "common"
+    },
+    {
+      "packageName": "@szewtwin/web-viewer-react",
+      "projectFolder": "packages/modules/web-viewer-react",
+      "shouldPublish": true,
+      "reviewCategory": "common"
+    },
+    {
+      "packageName": "@szewtwin/desktop-viewer-test",
+      "projectFolder": "packages/apps/desktop-viewer-test",
+      "shouldPublish": false,
+      "reviewCategory": "common"
+    },
+    {
+      "packageName": "@szewtwin/web-viewer-test",
+      "projectFolder": "packages/apps/web-viewer-test",
+      "shouldPublish": false,
+      "reviewCategory": "common"
+    }
+  ]
+}

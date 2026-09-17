@@ -1,0 +1,40 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Szewec Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
+
+import type { AccessToken } from "@szewtwin/core-szewec";
+import { useEffect, useState } from "react";
+
+import { ViewerAuthorization } from "../services/auth/index.js";
+import { useIsMounted } from "./useIsMounted.js";
+
+export const useAccessToken = () => {
+  const [accessToken, setAccessToken] = useState<AccessToken>("");
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token =
+          (await ViewerAuthorization.client?.getAccessToken()) ?? "";
+        setAccessToken(token);
+      } catch {}
+    };
+    void getAccessToken();
+  }, []);
+
+  useEffect(() => {
+    const removeListener =
+      ViewerAuthorization.client?.onAccessTokenChanged.addListener(
+        (token: AccessToken) => {
+          if (isMounted.current) {
+            setAccessToken(token);
+          }
+        }
+      );
+    return () => removeListener?.();
+  }, [isMounted]);
+
+  return accessToken;
+};

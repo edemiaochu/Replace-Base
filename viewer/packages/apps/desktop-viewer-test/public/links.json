@@ -1,0 +1,10 @@
+[
+  {
+    "textKey": "home.links.viewerComponent",
+    "url":"https://www.npmjs.com/package/@szewtwin/desktop-viewer-react"
+  },
+  {
+    "textKey": "home.links.customizeViewer",
+    "url":"https://developer.szewec.com/tutorials/szewtwin-viewer-hello-world/"    
+  }
+]

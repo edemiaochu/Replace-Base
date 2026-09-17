@@ -1,0 +1,7 @@
+# szewTwin-React-Viewer
+
+The szewTwin Viewer is a configurable szewTwin.js viewer that offers basic tooling and widgets out-of-the-box and can be further extended through the use of [szewTwin.js UI Providers](https://www.szewtwinjs.org/learning/ui/augmentingui/). This package contains the base Viewer as a React component and some additional Typescript API's. In most cases, the code in this package should not be consumed directly. Rather, you should opt for the package that corresponds to your application type: [@szewtwin/web-viewer-react](https://www.npmjs.com/package/@szewtwin/web-viewer-react) or [@szewtwin/desktop-viewer-react](https://www.npmjs.com/package/@szewtwin/desktop-viewer-react).
+
+## Development
+
+When making changes to the src, run `npm start` in the package's root folder to enable source watching and rebuild, so the dev-server will have access to updated code on succesful code compilation.

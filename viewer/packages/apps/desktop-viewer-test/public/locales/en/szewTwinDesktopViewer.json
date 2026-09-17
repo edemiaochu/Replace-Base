@@ -1,0 +1,47 @@
+{
+  "downloadBriefcase": "Download Briefcase",
+  "open": "Open",
+  "createNewIVault": "Create New iVault",
+  "download": "Download",
+  "placeTools": {
+    "lineStringLabel": "Place Line String",
+    "sphereLabel": "Place Sphere",
+    "moveLabel": "Move Elements",
+    "deleteLabel": "Delete Elements"
+  },
+  "tools": {
+    "PlaceLineString": {
+      "keyin": "place line string"
+    },
+    "PlaceSphere": {
+      "keyin": "place sphere"
+    },
+    "MoveElements": {
+      "keyin": "move elements"
+    },
+    "DeleteElements": {
+      "keyin": "delete elements"
+    }
+  },
+  "home": {
+    "start": "Start",
+    "learn": "Learn",
+    "openRecent": "Open recent",
+    "links": {
+      "viewerComponent": "Learn more about the Viewer component",
+      "customizeViewer": "Learn how to customize your szewTwin Viewer"
+    }
+  },
+  "saveBriefcase": "Save Briefcase",
+  "briefcaseStatusTitle": {
+    "comparing": "Checking for changes...",
+    "merging": "Pulling changes...",
+    "downloading": "Downloading...",
+    "outdated": "Click to pull upstream changes",
+    "upToDate": "Up to date",
+    "error": "An error occurred while retrieving the status",
+    "online": "Click to download the iVault",
+    "connection": "Connection:",
+    "changes": "Changes:"
+  }
+}

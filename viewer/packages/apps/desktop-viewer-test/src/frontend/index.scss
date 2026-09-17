@@ -1,0 +1,15 @@
+/*---------------------------------------------------------------------------------------------
+* Copyright (c) Szewec Systems, Incorporated. All rights reserved.
+* See LICENSE.md in the project root for license terms and full copyright notice.
+*--------------------------------------------------------------------------------------------*/
+
+@import '@szewtwin/szewtwinui-variables/index.css';
+@import '@szewtwin/szewtwinui-css/css/global.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--iui-color-background);
+  color:  var(--iui-color-background-accent);
+}

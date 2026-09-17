@@ -1,0 +1,133 @@
+=== diff: src/common/ViewerConfig.ts ===
+--- D:/01Work/NameReplaceTest/viewer/.superpowers/sdd/2026-09-04-create-new-ivault/task-a/base/ViewerConfig.ts	2026-09-04 10:10:18.731522300 +0800
++++ D:/01Work/NameReplaceTest/viewer/packages/apps/desktop-viewer-test/src/common/ViewerConfig.ts	2026-09-04 10:11:20.494847500 +0800
+@@ -17,6 +17,7 @@
+   SaveDialogOptions,
+   SaveDialogReturnValue,
+ } from "electron";
++import type { Id64String } from "@szewtwin/core-szewec";
+ import { DMSchemaRpcInterface } from "@szewtwin/ecschema-rpcinterface-common";
+ 
+ export const channelName = szewTwinChannel("desktop-viewer");
+@@ -29,6 +30,7 @@
+   removeRecentFile: (file: ViewerFile) => Promise<void>;
+   checkFileExists: (file: ViewerFile) => Promise<boolean>;
+   saveFile: (options: SaveDialogOptions) => Promise<SaveDialogReturnValue>;
++  createNewIVault: (args: CreateNewIVaultArgs) => Promise<CreateNewIVaultResult>;
+   setConnectivity: (
+     connectivityStatus: InternetConnectivityStatus
+   ) => Promise<void>;
+@@ -61,3 +63,21 @@
+   defaultRecent?: boolean;
+   recents?: ViewerFile[];
+ }
++
++/** Arguments for ViewerIpc.createNewIVault. */
++export interface CreateNewIVaultArgs {
++  /** The absolute path of the new .bim file. A ".bim" extension is appended if the path has no ".bim"/".ibim" extension. */
++  filePath: string;
++  /** Name for the root Subject of the new iVault. Defaults to the file name (without extension). */
++  name?: string;
++}
++
++/** Result of ViewerIpc.createNewIVault. */
++export interface CreateNewIVaultResult {
++  /** The absolute path of the created file. */
++  filePath: string;
++  /** The Id of the default PhysicalModel initialized in the new iVault. */
++  defaultModelId: Id64String;
++  /** The Id of the default SpatialCategory initialized in the new iVault. */
++  defaultCategoryId: Id64String;
++}
+=== NEW FILE: src/backend/CreateNewIVaultImpl.ts ===
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Szewec Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CategorySelector, DisplayStyle3d, IVaultDb, ModelSelector, OrthographicViewDefinition, PhysicalModel, SpatialCategory, StandaloneDb, withEditTxn } from "@szewtwin/core-backend";
+import { SubCategoryAppearance } from "@szewtwin/core-common";
+import { Range3d, StandardViewIndex } from "@szewtwin/core-geometry";
+import { existsSync } from "node:fs";
+import * as path from "path";
+
+import type { CreateNewIVaultArgs, CreateNewIVaultResult } from "../common/ViewerConfig";
+
+/** Appends a ".bim" extension to `filePath` if it does not already end in ".bim" or ".ibim". */
+function normalizeFilePath(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase();
+  return ".bim" === ext || ".ibim" === ext ? filePath : `${filePath}.bim`;
+}
+
+/** Creates a new, empty, editable standalone iVault (.bim) file on disk, initialized with a default
+ * PhysicalModel, SpatialCategory, and spatial view so that the file is immediately usable.
+ */
+export function createNewIVault(args: CreateNewIVaultArgs): CreateNewIVaultResult {
+  const filePath = normalizeFilePath(args.filePath);
+  if (existsSync(filePath))
+    throw new Error(`File already exists: ${filePath}`);
+
+  const name = args.name ?? path.basename(filePath, path.extname(filePath));
+  const db = StandaloneDb.createEmpty(filePath, {
+    rootSubject: { name },
+    enableTransactions: true,
+  });
+
+  const { defaultModelId, defaultCategoryId, defaultViewId } = withEditTxn(db, (txn) => {
+    const defaultCategoryId = SpatialCategory.insert(txn, IVaultDb.dictionaryId, "Default", new SubCategoryAppearance());
+    const defaultModelId = PhysicalModel.insert(txn, IVaultDb.rootSubjectId, "Default");
+
+    // Create a default spatial view that displays the new model and category.
+    const modelSelectorId = ModelSelector.insert(txn, IVaultDb.dictionaryId, "Default", [defaultModelId]);
+    const categorySelectorId = CategorySelector.insert(txn, IVaultDb.dictionaryId, "Default", [defaultCategoryId]);
+    const displayStyleId = DisplayStyle3d.insert(txn, IVaultDb.dictionaryId, "Default");
+    const defaultViewId = OrthographicViewDefinition.insert(txn, IVaultDb.dictionaryId, "Default View", modelSelectorId, categorySelectorId, displayStyleId, new Range3d(-100, -100, -100, 100, 100, 100), StandardViewIndex.Iso);
+
+    return { defaultModelId, defaultCategoryId, defaultViewId };
+  });
+
+  // setDefaultViewId writes via the implicit txn, so it must be called outside the EditTxn above.
+  db.views.setDefaultViewId(defaultViewId);
+
+  db.close(); // All changes are saved; close it so the frontend can open it.
+
+  return { filePath, defaultModelId, defaultCategoryId };
+}
+=== diff: src/backend/ViewerHandler.ts ===
+--- D:/01Work/NameReplaceTest/viewer/.superpowers/sdd/2026-09-04-create-new-ivault/task-a/base/ViewerHandler.ts	2026-09-04 10:10:18.740552900 +0800
++++ D:/01Work/NameReplaceTest/viewer/packages/apps/desktop-viewer-test/src/backend/ViewerHandler.ts	2026-09-04 10:11:28.953191200 +0800
+@@ -17,6 +17,8 @@
+ import { existsSync } from "node:fs";
+ 
+ import type {
++  CreateNewIVaultArgs,
++  CreateNewIVaultResult,
+   ViewerConfig,
+   ViewerFile,
+   ViewerIpc,
+@@ -24,6 +26,7 @@
+ } from "../common/ViewerConfig";
+ import { channelName } from "../common/ViewerConfig";
+ import { getAppEnvVar } from "./AppInfo";
++import { createNewIVault } from "./CreateNewIVaultImpl";
+ import UserSettings from "./UserSettings";
+ 
+ class ViewerHandler extends IpcHandler implements ViewerIpc {
+@@ -68,6 +71,17 @@
+   }
+ 
+   /**
++   * Create a new, empty, editable standalone iVault (.bim) file on disk.
++   * @param args
++   * @returns
++   */
++  public async createNewIVault(
++    args: CreateNewIVaultArgs
++  ): Promise<CreateNewIVaultResult> {
++    return createNewIVault(args);
++  }
++
++  /**
+    * Get user settings
+    * @returns ViewerSettings
+    */

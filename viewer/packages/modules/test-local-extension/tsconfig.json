@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": ".",
+    "resolveJsonModule": true,
+    "composite": true,
+    "incremental": false,
+    "target": "ESNext"
+  },
+  "files": ["package.json"]
+}

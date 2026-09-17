@@ -1,0 +1,87 @@
+=== diff: src/frontend/app/SZEWTwinViewerApp.ts ===
+--- D:/01Work/NameReplaceTest/viewer/.superpowers/sdd/2026-09-04-create-new-ivault/task-b/base/SZEWTwinViewerApp.ts	2026-09-04 10:10:18.777989600 +0800
++++ D:/01Work/NameReplaceTest/viewer/packages/apps/desktop-viewer-test/src/frontend/app/SZEWTwinViewerApp.ts	2026-09-04 10:41:26.189579100 +0800
+@@ -9,7 +9,11 @@
+ import type { OpenDialogOptions, SaveDialogOptions } from "electron";
+ import type { NavigateFunction } from "react-router-dom";
+ 
+-import type { ViewerConfig, ViewerIpc } from "../../common/ViewerConfig";
++import type {
++  CreateNewIVaultResult,
++  ViewerConfig,
++  ViewerIpc,
++} from "../../common/ViewerConfig";
+ import { channelName } from "../../common/ViewerConfig";
+ 
+ export declare type PickAsyncMethods<T> = {
+@@ -119,4 +123,17 @@
+ 
+     return val.canceled || !val.filePath ? undefined : val.filePath;
+   }
++
++  public static async createIVault(): Promise<CreateNewIVaultResult | undefined> {
++    const options: SaveDialogOptions = {
++      title: SZEWTwinViewerApp.translate("createNewIVault"),
++      defaultPath: "NewIVault.bim",
++      filters: [{ name: "iVaults", extensions: ["ibim", "bim"] }],
++    };
++    const val = await SZEWTwinViewerApp.ipcCall.saveFile(options);
++    if (val.canceled || !val.filePath)
++      return undefined;
++
++    return SZEWTwinViewerApp.ipcCall.createNewIVault({ filePath: val.filePath });
++  }
+ }
+=== diff: src/frontend/components/home/Home.tsx ===
+--- D:/01Work/NameReplaceTest/viewer/.superpowers/sdd/2026-09-04-create-new-ivault/task-b/base/Home.tsx	2026-09-04 10:10:18.790131800 +0800
++++ D:/01Work/NameReplaceTest/viewer/packages/apps/desktop-viewer-test/src/frontend/components/home/Home.tsx	2026-09-04 10:41:38.306118100 +0800
+@@ -7,7 +7,7 @@
+ 
+ import { InternetConnectivityStatus } from "@szewtwin/core-common";
+ import { useConnectivity } from "@szewtwin/desktop-viewer-react";
+-import { SvgFolderOpened, SvgIvault } from "@szewtwin/szewtwinui-icons-react";
++import { SvgAdd, SvgFolderOpened, SvgIvault } from "@szewtwin/szewtwinui-icons-react";
+ import { PageLayout } from "@szewtwin/szewtwinui-layouts-react";
+ import { Blockquote, Text } from "@szewtwin/szewtwinui-react";
+ import { useContext, useEffect, useState } from "react";
+@@ -55,6 +55,18 @@
+     }
+   };
+ 
++  const createIVault = async () => {
++    try {
++      const result = await SZEWTwinViewerApp.createIVault();
++      if (result) {
++        void userSettings.addRecent(result.filePath);
++        void navigate("/viewer", { state: { filePath: result.filePath } });
++      }
++    } catch (err: any) {
++      alert(`Error creating iVault: ${err.toString()}`);
++    }
++  };
++
+   return (
+     <>
+       <PageLayout.TitleArea>
+@@ -71,6 +83,10 @@
+               <span onClick={openFile}>{SZEWTwinViewerApp.translate("open")}</span>
+             </div>
+             <div>
++              <SvgAdd />
++              <span onClick={createIVault}>{SZEWTwinViewerApp.translate("createNewIVault")}</span>
++            </div>
++            <div>
+               <SvgIvault className={linkClass} />
+               <Link to="szewtwins" className={linkClass}>
+                 {SZEWTwinViewerApp.translate("download")}
+=== diff: public/locales/en/szewTwinDesktopViewer.json ===
+--- D:/01Work/NameReplaceTest/viewer/.superpowers/sdd/2026-09-04-create-new-ivault/task-b/base/szewTwinDesktopViewer.json	2026-09-04 10:10:18.800261400 +0800
++++ D:/01Work/NameReplaceTest/viewer/packages/apps/desktop-viewer-test/public/locales/en/szewTwinDesktopViewer.json	2026-09-04 10:41:45.177217300 +0800
+@@ -1,6 +1,7 @@
+ {
+   "downloadBriefcase": "Download Briefcase",
+   "open": "Open",
++  "createNewIVault": "Create New iVault",
+   "download": "Download",
+   "home": {
+     "start": "Start",

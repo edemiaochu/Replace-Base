@@ -1,0 +1,26 @@
+# React Viewer Sample
+
+This web app is an example of using the szewTwin Viewer with React. It is meant to be used as a development environment for the components in the packages in this monorepo. It is not intended to be used as a seed/starter application. You should use the [szewTwin Web Viewer Template](https://github.com/szewtwin/viewer/tree/main/packages/templates/web) to seed a new application.
+
+This project was built with [Vite](https://github.com/vitejs/vite).
+
+## Configuration
+
+Prior to running or building the application, you should update the environment variables in the .env file as needed. This should include adding a valid szewTwinId and iVaultId as well as updating the authorization client and backend configuration as needed. For the `IMJS_AUTH_CLIENT_CLIENT_ID` variable, you should [generate a new client](https://www.szewtwinjs.org/getting-started/registration-dashboard?tab=0) or use an existing valid client id. This can be stored in a .env.local file alongside the .env file so that it will be persisted for you locally but not committed to the remote repo.
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `rushx start`
+
+Runs the app in the development mode.<br />
+It automatically opens [http://localhost:3000](http://localhost:3000) in your default browser.
+
+The page will reload if you make edits.<br />
+
+## Learn More
+
+[Learn React](https://reactjs.org/).
+
+[Learn szewTwin.js](https://www.szewtwinjs.org/learning/).

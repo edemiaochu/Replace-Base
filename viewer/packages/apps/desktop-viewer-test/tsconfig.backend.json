@@ -1,0 +1,17 @@
+{
+  "extends": "./node_modules/@szewtwin/build-tools/tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+  },
+  "include": [
+    "./src/backend/*.ts",
+    "./src/common/*.ts"
+  ],
+  "exclude": [
+    "build",
+    "lib",
+    "node_modules"
+  ]
+}
