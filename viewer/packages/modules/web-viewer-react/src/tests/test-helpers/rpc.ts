@@ -10,7 +10,7 @@ import {
   RpcInterface,
   RpcManager,
 } from "@szewtwin/core-common";
-import { DMSchemaRpcInterface } from "@szewtwin/ecschema-rpcinterface-common";
+import { DMSchemaRpcInterface } from "@szewtwin/dmschema-rpcinterface-common";
 import { PresentationRpcInterface } from "@szewtwin/presentation-common";
 
 export const defaultRpcInterfaces = [

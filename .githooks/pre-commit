@@ -1,0 +1,15 @@
+#!/bin/sh
+# POSIX-sh dispatcher for the rush-installed pre-commit hook.
+#
+# GitHub Desktop's embedded Git ships sh.exe but no bash.exe, so the wrapper
+# rush generates in .git/hooks/ (#!/usr/bin/env bash) dies there with
+# "/usr/bin/env: bash: No such file or directory". Pointing core.hooksPath
+# here bypasses it (and survives rush install/update rewriting .git/hooks).
+#
+# Git runs hooks with CWD at the repo root, but the rush hook implementation
+# (viewer/common/git-hooks/pre-commit) expects CWD at viewer/, where rush.json
+# lives -- hence the cd below.
+set -e
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$ROOT/viewer"
+exec ./common/git-hooks/pre-commit "$@"

@@ -5,7 +5,7 @@
 
 ## 目标
 
-在 display-test-app（Electron 桌面端）中提供"新建 BIM 文件"功能：用户在系统保存对话框中指定路径，应用在本地创建空白可编辑的 `.bim` 文件，并自动以读写模式打开显示。新文件自带默认 PhysicalModel、SpatialCategory 和默认空间视图，打开后编辑工具立即可用。
+在 display-test-app（Electron 桌面端）中提供"新建 BIM 文件"功能：用户在系统保存对话框中指定路径，应用在本地创建空白可编辑的 `.dtw` 文件，并自动以读写模式打开显示。新文件自带默认 PhysicalModel、SpatialCategory 和默认空间视图，打开后编辑工具立即可用。
 
 > **修订（2026-09-04，Task 4 验收驱动）**：初版实现的新文件无法编辑（`svt place line string` 报 "Key-in failed to run"）。根因：空白文件无 model/category，且前端 `BriefcaseEditorToolSettings` 无默认值，`CreateElementTool.isCompatibleViewport` 因此拒绝工具启动。本修订增加默认内容初始化和前端 editorToolSettings 回填，详见下文。
 
@@ -52,7 +52,7 @@ Surface.createViewer() 新建 Viewer 并 Dock.Full 显示
 
 ```ts
 export interface CreateNewIVaultArgs {
-  /** 新 .bim 文件的绝对路径 */
+  /** 新 .dtw 文件的绝对路径 */
   filePath: string;
   /** 根 Subject 名称；缺省时用文件名（不含扩展名） */
   name?: string;
@@ -75,7 +75,7 @@ createNewIVault(args: CreateNewIVaultArgs): Promise<CreateNewIVaultResult>;
 
 **`src/backend/CreateNewIVaultImpl.ts`**（仿照 `SectionDrawingImpl.ts` 模式）：
 
-1. 规范化扩展名：路径不以 `.bim`/`.ibim` 结尾时补 `.bim`。
+1. 规范化扩展名：路径不以 `.dtw`/`.dtw` 结尾时补 `.dtw`。
 2. `fs.existsSync(filePath)` 为真时抛友好错误（文件已存在，不覆盖）。
 3. `StandaloneDb.createEmpty(filePath, { rootSubject: { name }, enableTransactions: true })`
    - `enableTransactions: true` 使文件可本地编辑（`CreateStandaloneIVaultProps.enableTransactions`）。
@@ -101,7 +101,7 @@ public async createNewIVault(args: CreateNewIVaultArgs): Promise<string> {
 
 **`src/frontend/FileOpen.ts`**：新增 `selectSaveFileName()`：
 
-- Electron：`ElectronApp.dialogIpc.showSaveDialog({ title: "Create New iVault", defaultPath: "NewIVault.bim", filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }] })`；取消返回 undefined。
+- Electron：`ElectronApp.dialogIpc.showSaveDialog({ title: "Create New iVault", defaultPath: "NewIVault.dtw", filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }] })`；取消返回 undefined。
 - 非 Electron：返回 undefined（调用方给出提示）。
 
 **`src/frontend/Surface.ts`**：

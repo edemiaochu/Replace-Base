@@ -127,7 +127,7 @@ export class SZEWTwinViewerApp {
   public static async createIVault(): Promise<CreateNewIVaultResult | undefined> {
     const options: SaveDialogOptions = {
       title: SZEWTwinViewerApp.translate("createNewIVault"),
-      defaultPath: "NewIVault.bim",
+      defaultPath: "NewIVault.dtw",
       filters: [{ name: "iVaults", extensions: ["ibim", "bim"] }],
     };
     const val = await SZEWTwinViewerApp.ipcCall.saveFile(options);

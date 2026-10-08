@@ -47,7 +47,7 @@ export const ViewerRoute = () => {
 
   return filePath ? (
     <Viewer
-      clientId={import.meta.env.IMJS_VIEWER_CLIENT_ID ?? ""}
+      clientId={import.meta.env.IVJS_VIEWER_CLIENT_ID ?? ""}
       rpcInterfaces={viewerRpcs}
       filePath={filePath}
       readonly={false}

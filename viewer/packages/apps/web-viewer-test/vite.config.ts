@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "@svgr/rollup";
 import path from "node:path";
 
-const ENV_PREFIX = "IMJS_";
+const ENV_PREFIX = "IVJS_";
 
 // https://vite.dev/config/
 export default defineConfig(() => {

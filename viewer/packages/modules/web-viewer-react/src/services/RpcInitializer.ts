@@ -13,7 +13,7 @@ import {
   IVaultReadRpcInterface,
   IVaultTileRpcInterface,
 } from "@szewtwin/core-common";
-import { DMSchemaRpcInterface } from "@szewtwin/ecschema-rpcinterface-common";
+import { DMSchemaRpcInterface } from "@szewtwin/dmschema-rpcinterface-common";
 import { PresentationRpcInterface } from "@szewtwin/presentation-common";
 
 import type { BackendConfiguration } from "../types.js";
@@ -22,7 +22,7 @@ import type { BackendConfiguration } from "../types.js";
  * The RpcInitializer handles registration of backends/instantiates RpcInterface clients.
  */
 export class RpcInitializer {
-  readonly orchestratorUrl = `https://${globalThis.IMJS_URL_PREFIX}api.szewec.com`;
+  readonly orchestratorUrl = `https://${globalThis.IVJS_URL_PREFIX}api.szewec.com`;
 
   /**
    * Instantiates a `DefaultBackend` and optional `CustomBackend`s. The `DefaultBackend`

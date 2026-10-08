@@ -6,7 +6,7 @@ This project was built with [Vite](https://github.com/vitejs/vite).
 
 ## Configuration
 
-Prior to running or building the application, you should update the environment variables in the .env file as needed. This should include adding a valid szewTwinId and iVaultId as well as updating the authorization client and backend configuration as needed. For the `IMJS_AUTH_CLIENT_CLIENT_ID` variable, you should [generate a new client](https://www.szewtwinjs.org/getting-started/registration-dashboard?tab=0) or use an existing valid client id. This can be stored in a .env.local file alongside the .env file so that it will be persisted for you locally but not committed to the remote repo.
+Prior to running or building the application, you should update the environment variables in the .env file as needed. This should include adding a valid szewTwinId and iVaultId as well as updating the authorization client and backend configuration as needed. For the `IVJS_AUTH_CLIENT_CLIENT_ID` variable, you should [generate a new client](https://www.szewtwinjs.org/getting-started/registration-dashboard?tab=0) or use an existing valid client id. This can be stored in a .env.local file alongside the .env file so that it will be persisted for you locally but not committed to the remote repo.
 
 ## Available Scripts
 

@@ -138,7 +138,7 @@ describe("BaseInitializer", () => {
       },
       configurable: true,
     });
-    globalThis.IMJS_URL_PREFIX = "";
+    globalThis.IVJS_URL_PREFIX = "";
   });
 
   it("gets default iVaultApp options", () => {

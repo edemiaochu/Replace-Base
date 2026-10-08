@@ -7,7 +7,7 @@ import { IVaultHost, IVaultHostConfiguration, IpcHost } from "@szewtwin/core-bac
 import { Logger, LogLevel } from "@szewtwin/core-szewec";
 import type { ElectronHostOptions } from "@szewtwin/core-electron/lib/cjs/ElectronBackend";
 import { ElectronHost } from "@szewtwin/core-electron/lib/cjs/ElectronBackend";
-import { DMSchemaRpcImpl } from "@szewtwin/ecschema-rpcinterface-impl";
+import { DMSchemaRpcImpl } from "@szewtwin/dmschema-rpcinterface-impl";
 import { EditCommandAdmin } from "@szewtwin/editor-backend";
 import * as editorBuiltInCommands from "@szewtwin/editor-backend";
 import { BackendIVaultsAccess } from "@szewtwin/ivaults-access-backend";

@@ -29,7 +29,7 @@ import React, { useState, useEffect } from "react";
 import { Viewer } from "@szewtwin/desktop-viewer-react";
 
 export const MyViewerComponent = () => {
-  const snapshotPath = "./samples/house_model.bim";
+  const snapshotPath = "./samples/house_model.dtw";
 
   return (
     <Viewer filePath={snapshotPath} enablePerformanceMonitors={true} />

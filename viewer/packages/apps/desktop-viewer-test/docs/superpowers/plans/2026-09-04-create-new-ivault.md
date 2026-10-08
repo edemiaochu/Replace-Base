@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 在 display-test-app（Electron）中通过工具栏按钮 / key-in 创建空白可编辑 .bim 文件并自动打开显示。
+**Goal:** 在 display-test-app（Electron）中通过工具栏按钮 / key-in 创建空白可编辑 .dtw 文件并自动打开显示。
 
 **Architecture:** 前端（renderer）通过 IPC channel `display-test-app/dta` 调用后端（Electron main）的 `createNewIVault`，后端用 `StandaloneDb.createEmpty` 创建空白 standalone iVault 并关闭，前端再用 `BriefcaseConnection.openStandalone` 以读写模式打开并在新 Viewer 中显示。平台仅限 Electron。
 
@@ -12,11 +12,11 @@
 
 ## Global Constraints
 
-- **非 git 仓库**（`git rev-parse` 在 itwinjs-core 下失败）：所有 commit 步骤省略，改为构建验证检查点。
+- **非 git 仓库**（`git rev-parse` 在 szewtwinjs-core 下失败）：所有 commit 步骤省略，改为构建验证检查点。
 - **无测试框架**：display-test-app 的 package.json `test` script 为空，不写自动化测试；验证 = `rushx build` 编译 + `rushx start` 手动检查。
 - **Rush monorepo**：只在 `test-apps/display-test-app` 内用 `rushx`，绝不用 `npm`/`pnpm` 直接操作（CLAUDE.md）。
-- 平台范围仅 Electron；文件扩展名 `.bim`/`.ibim`；新文件必须 `enableTransactions: true`。
-- 术语沿用分叉命名：iVault（不是 iModel）、IVaultApp、IVaultConnection。
+- 平台范围仅 Electron；文件扩展名 `.dtw`/`.dtw`；新文件必须 `enableTransactions: true`。
+- 术语沿用分叉命名：iVault（不是 iVault）、IVaultApp、IVaultConnection。
 - 前端错误处理沿用 `try/catch + alert` 模式；后端抛 `Error`，错误信息经 IPC 传回前端显示。
 - 本仓库 lint 使用 `eslint.config.js`；如 build/lint 报错按仓库现有风格修复。
 
@@ -47,7 +47,7 @@
 display-test-app 的 node_modules 当前不存在（本会话早前已确认），必须先安装：
 
 ```bash
-cd D:/01Work/NameReplaceTest/itwinjs-core
+cd D:/01Work/NameReplaceTest/szewtwinjs-core
 rush install
 ```
 
@@ -79,7 +79,7 @@ rushx build
 - Consumes: `StandaloneDb.createEmpty(filePath: string, args: CreateEmptyStandaloneIVaultProps)` from `@szewtwin/core-backend`（`rootSubject.name`、`enableTransactions` 字段已在 `core/common/src/IVault.ts:209-228` 定义；`LocalHub.ts:117` 有 `rootSubject: { name }` 用法先例）
 - Produces:
   - `interface CreateNewIVaultArgs { filePath: string; name?: string }`（`src/common/DtaIpcInterface.ts` 导出）
-  - `createNewIVault(args: CreateNewIVaultArgs): Promise<string>` — IPC 方法；返回规范化后的绝对路径（无 `.bim`/`.ibim` 扩展名时补 `.bim`）
+  - `createNewIVault(args: CreateNewIVaultArgs): Promise<string>` — IPC 方法；返回规范化后的绝对路径（无 `.dtw`/`.dtw` 扩展名时补 `.dtw`）
 
 - [ ] **Step 1: 在 DtaIpcInterface.ts 声明契约**
 
@@ -88,7 +88,7 @@ rushx build
 ```ts
 /** Arguments for DtaIpcInterface.createNewIVault. */
 export interface CreateNewIVaultArgs {
-  /** The absolute path of the new .bim file. A ".bim" extension is appended if the path has no ".bim"/".ibim" extension. */
+  /** The absolute path of the new .dtw file. A ".dtw" extension is appended if the path has no ".dtw"/".dtw" extension. */
   filePath: string;
   /** Name for the root Subject of the new iVault. Defaults to the file name (without extension). */
   name?: string;
@@ -98,7 +98,7 @@ export interface CreateNewIVaultArgs {
 并在 `DtaIpcInterface` 接口内、`sayHello` 方法之后（约第 37 行）插入：
 
 ```ts
-  /** Creates a new empty standalone iVault (.bim) file on disk, then closes it so the frontend can open it.
+  /** Creates a new empty standalone iVault (.dtw) file on disk, then closes it so the frontend can open it.
    * Returns the (possibly normalized) absolute path of the created file.
    */
   createNewIVault(args: CreateNewIVaultArgs): Promise<string>;
@@ -118,13 +118,13 @@ import * as path from "path";
 import { StandaloneDb } from "@szewtwin/core-backend";
 import { CreateNewIVaultArgs } from "../common/DtaIpcInterface";
 
-/** Appends a ".bim" extension to `filePath` if it does not already end in ".bim" or ".ibim". */
+/** Appends a ".dtw" extension to `filePath` if it does not already end in ".dtw" or ".dtw". */
 function normalizeFilePath(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
-  return ".bim" === ext || ".ibim" === ext ? filePath : `${filePath}.bim`;
+  return ".dtw" === ext || ".dtw" === ext ? filePath : `${filePath}.dtw`;
 }
 
-/** Creates a new, empty, editable standalone iVault (.bim) file on disk. */
+/** Creates a new, empty, editable standalone iVault (.dtw) file on disk. */
 export function createNewIVault(args: CreateNewIVaultArgs): string {
   const filePath = normalizeFilePath(args.filePath);
   if (fs.existsSync(filePath))
@@ -168,7 +168,7 @@ import { createNewIVault } from "./CreateNewIVaultImpl";
 - [ ] **Step 4: 构建验证**
 
 ```bash
-cd D:/01Work/NameReplaceTest/itwinjs-core/test-apps/display-test-app
+cd D:/01Work/NameReplaceTest/szewtwinjs-core/test-apps/display-test-app
 rushx build
 ```
 
@@ -208,7 +208,7 @@ export async function selectSaveFileName(): Promise<string | undefined> {
   if (ProcessDetector.isElectronAppFrontend) {
     const opts: SaveDialogOptions = {
       title: "Create New iVault",
-      defaultPath: "NewIVault.bim",
+      defaultPath: "NewIVault.dtw",
       filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }],
     };
     const val = await ElectronApp.dialogIpc.showSaveDialog(opts);
@@ -222,7 +222,7 @@ export async function selectSaveFileName(): Promise<string | undefined> {
 - [ ] **Step 3: 构建验证**
 
 ```bash
-cd D:/01Work/NameReplaceTest/itwinjs-core/test-apps/display-test-app
+cd D:/01Work/NameReplaceTest/szewtwinjs-core/test-apps/display-test-app
 rushx build
 ```
 
@@ -349,7 +349,7 @@ export class NewIVaultTool extends Tool {
 - [ ] **Step 6: 构建验证**
 
 ```bash
-cd D:/01Work/NameReplaceTest/itwinjs-core/test-apps/display-test-app
+cd D:/01Work/NameReplaceTest/szewtwinjs-core/test-apps/display-test-app
 rushx build
 ```
 
@@ -368,15 +368,15 @@ rushx build
 - [ ] **Step 1: 启动应用**
 
 ```bash
-cd D:/01Work/NameReplaceTest/itwinjs-core/test-apps/display-test-app
+cd D:/01Work/NameReplaceTest/szewtwinjs-core/test-apps/display-test-app
 rushx start
 ```
 
 - [ ] **Step 2: 验证工具栏按钮流程**
 
 1. 点击工具栏新按钮（file-empty 图标，tooltip "Create New iVault"）。
-2. 弹出系统保存对话框（标题 "Create New iVault"，默认文件名 NewIVault.bim）。
-3. 选择路径并保存（可故意不写扩展名，验证自动补 `.bim`）。
+2. 弹出系统保存对话框（标题 "Create New iVault"，默认文件名 NewIVault.dtw）。
+3. 选择路径并保存（可故意不写扩展名，验证自动补 `.dtw`）。
 4. 新文件自动以读写模式打开并显示在新 Viewer 中。
 5. 验证文件可编辑：例如用 key-in `editing scope` 进入编辑会话插入元素并保存。
 6. 关闭该 Viewer 后，用 "Open iVault from disk" 按钮重新打开该文件，确认文件有效。
@@ -384,13 +384,13 @@ rushx start
 - [ ] **Step 3: 验证 key-in 流程**
 
 1. key-in 输入 `newivault` → 弹出保存对话框，行为同 Step 2。
-2. key-in 输入 `newivault C:\temp\test-keyin`（不存在扩展名）→ 直接创建 `C:\temp\test-keyin.bim` 并打开。
-3. 对已存在的路径再次 `newivault C:\temp\test-keyin.bim` → 弹出 alert 提示文件已存在，且不覆盖原文件。
+2. key-in 输入 `newivault C:\temp\test-keyin`（不存在扩展名）→ 直接创建 `C:\temp\test-keyin.dtw` 并打开。
+3. 对已存在的路径再次 `newivault C:\temp\test-keyin.dtw` → 弹出 alert 提示文件已存在，且不覆盖原文件。
 
 - [ ] **Step 4: 验证取消与错误路径**
 
 1. 保存对话框中点击取消 → 静默返回，无错误弹窗。
-2. key-in `newivault Z:\不存在目录\x.bim` → alert 显示创建失败错误。
+2. key-in `newivault Z:\不存在目录\x.dtw` → alert 显示创建失败错误。
 
 - [ ] **Step 5: 验收结论**
 

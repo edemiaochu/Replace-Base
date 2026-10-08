@@ -4,7 +4,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
-const ENV_PREFIX = "IMJS_";
+const ENV_PREFIX = "IVJS_";
 
 export default defineConfig((): UserConfig => {
   return {

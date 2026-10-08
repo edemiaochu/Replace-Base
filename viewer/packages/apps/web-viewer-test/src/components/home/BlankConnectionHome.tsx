@@ -24,10 +24,10 @@ const BlankConnectionHome: React.FC = () => {
   const authClient = useMemo(
     () =>
       new BrowserAuthorizationClient({
-        scope: import.meta.env.IMJS_AUTH_CLIENT_SCOPES ?? "",
-        clientId: import.meta.env.IMJS_AUTH_CLIENT_CLIENT_ID ?? "",
-        redirectUri: import.meta.env.IMJS_AUTH_CLIENT_REDIRECT_URI ?? "",
-        postSignoutRedirectUri: import.meta.env.IMJS_AUTH_CLIENT_LOGOUT_URI,
+        scope: import.meta.env.IVJS_AUTH_CLIENT_SCOPES ?? "",
+        clientId: import.meta.env.IVJS_AUTH_CLIENT_CLIENT_ID ?? "",
+        redirectUri: import.meta.env.IVJS_AUTH_CLIENT_REDIRECT_URI ?? "",
+        postSignoutRedirectUri: import.meta.env.IVJS_AUTH_CLIENT_LOGOUT_URI,
         responseType: "code",
       }),
     []
@@ -36,7 +36,7 @@ const BlankConnectionHome: React.FC = () => {
   const realityDataAccessClient = useMemo(
     () =>
       new RealityDataAccessClient({
-        baseUrl: `https://${globalThis.IMJS_URL_PREFIX}api.szewec.com/realitydata`,
+        baseUrl: `https://${globalThis.IVJS_URL_PREFIX}api.szewec.com/realitydata`,
         authorizationClient: authClient,
       }),
     [authClient]

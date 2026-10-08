@@ -48,16 +48,16 @@ const ViewerHome: React.FC = () => {
     import.meta.env.IMJS_AUTH_CLIENT_IVAULT_ID
   );
   const [changesetId, setChangesetId] = useState(
-    import.meta.env.IMJS_AUTH_CLIENT_CHANGESET_ID
+    import.meta.env.IVJS_AUTH_CLIENT_CHANGESET_ID
   );
 
   const authClient = useMemo(
     () =>
       new BrowserAuthorizationClient({
-        scope: import.meta.env.IMJS_AUTH_CLIENT_SCOPES ?? "",
-        clientId: import.meta.env.IMJS_AUTH_CLIENT_CLIENT_ID ?? "",
-        redirectUri: import.meta.env.IMJS_AUTH_CLIENT_REDIRECT_URI ?? "",
-        postSignoutRedirectUri: import.meta.env.IMJS_AUTH_CLIENT_LOGOUT_URI,
+        scope: import.meta.env.IVJS_AUTH_CLIENT_SCOPES ?? "",
+        clientId: import.meta.env.IVJS_AUTH_CLIENT_CLIENT_ID ?? "",
+        redirectUri: import.meta.env.IVJS_AUTH_CLIENT_REDIRECT_URI ?? "",
+        postSignoutRedirectUri: import.meta.env.IVJS_AUTH_CLIENT_LOGOUT_URI,
         responseType: "code",
       }),
     []
@@ -132,7 +132,7 @@ const ViewerHome: React.FC = () => {
         mapLayerOptions={{
           BingMaps: {
             key: "key",
-            value: import.meta.env.IMJS_BING_MAPS_KEY ?? "",
+            value: import.meta.env.IVJS_BING_MAPS_KEY ?? "",
           },
         }}
         notifications={new AppNotificationManager()}

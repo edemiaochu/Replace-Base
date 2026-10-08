@@ -18,7 +18,7 @@ import type {
   SaveDialogReturnValue,
 } from "electron";
 import type { Id64String } from "@szewtwin/core-szewec";
-import { DMSchemaRpcInterface } from "@szewtwin/ecschema-rpcinterface-common";
+import { DMSchemaRpcInterface } from "@szewtwin/dmschema-rpcinterface-common";
 
 export const channelName = szewTwinChannel("desktop-viewer");
 

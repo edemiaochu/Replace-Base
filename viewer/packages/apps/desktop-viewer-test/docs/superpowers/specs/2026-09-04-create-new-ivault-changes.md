@@ -23,7 +23,7 @@
 ```ts
 /** Arguments for DtaIpcInterface.createNewIVault. */
 export interface CreateNewIVaultArgs {
-  /** The absolute path of the new .bim file. A ".bim" extension is appended if the path has no ".bim"/".ibim" extension. */
+  /** The absolute path of the new .dtw file. A ".dtw" extension is appended if the path has no ".dtw"/".dtw" extension. */
   filePath: string;
   /** Name for the root Subject of the new iVault. Defaults to the file name (without extension). */
   name?: string;
@@ -43,7 +43,7 @@ export interface CreateNewIVaultResult {
 在 `DtaIpcInterface` 接口内、`sayHello` 之后新增方法：
 
 ```ts
-  /** Creates a new empty standalone iVault (.bim) file on disk, then closes it so the frontend can open it.
+  /** Creates a new empty standalone iVault (.dtw) file on disk, then closes it so the frontend can open it.
    * Returns the created file path along with the Ids of the default model and category initialized in the new file.
    */
   createNewIVault(args: CreateNewIVaultArgs): Promise<CreateNewIVaultResult>;
@@ -63,13 +63,13 @@ import { SubCategoryAppearance } from "@szewtwin/core-common";
 import { Range3d, StandardViewIndex } from "@szewtwin/core-geometry";
 import { CreateNewIVaultArgs, CreateNewIVaultResult } from "../common/DtaIpcInterface";
 
-/** Appends a ".bim" extension to `filePath` if it does not already end in ".bim" or ".ibim". */
+/** Appends a ".dtw" extension to `filePath` if it does not already end in ".dtw" or ".dtw". */
 function normalizeFilePath(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
-  return ".bim" === ext || ".ibim" === ext ? filePath : `${filePath}.bim`;
+  return ".dtw" === ext || ".dtw" === ext ? filePath : `${filePath}.dtw`;
 }
 
-/** Creates a new, empty, editable standalone iVault (.bim) file on disk, initialized with a default
+/** Creates a new, empty, editable standalone iVault (.dtw) file on disk, initialized with a default
  * PhysicalModel, SpatialCategory, and spatial view so that editing tools work immediately after opening.
  */
 export function createNewIVault(args: CreateNewIVaultArgs): CreateNewIVaultResult {
@@ -134,7 +134,7 @@ export async function selectSaveFileName(): Promise<string | undefined> {
   if (ProcessDetector.isElectronAppFrontend) {
     const opts: SaveDialogOptions = {
       title: "Create New iVault",
-      defaultPath: "NewIVault.bim",
+      defaultPath: "NewIVault.dtw",
       filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }],
     };
     const val = await ElectronApp.dialogIpc.showSaveDialog(opts);
@@ -225,4 +225,4 @@ export class NewIVaultTool extends Tool {
 
 - 每个任务后 `rushx build` 均通过；5 次任务评审 + 1 次全量评审（opus）通过。
 - 手动验收（用户）：新建 → `svt editing session` → `svt place line string` → 放置元素 → 保存 → 重开验证，全部通过。
-- 完整过程记录（ledger/brief/report/评审包）：`itwinjs-core/.superpowers/sdd/2026-09-04-create-new-ivault/`。
+- 完整过程记录（ledger/brief/report/评审包）：`szewtwinjs-core/.superpowers/sdd/2026-09-04-create-new-ivault/`。

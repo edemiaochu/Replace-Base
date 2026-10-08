@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import "./typings/global.js";
-globalThis.IMJS_URL_PREFIX ??= ""; // default to prod
+globalThis.IVJS_URL_PREFIX ??= ""; // default to prod
 
 export * from "./components/BaseViewer.js";
 export * from "./services/BaseInitializer.js";

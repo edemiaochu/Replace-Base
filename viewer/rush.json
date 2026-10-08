@@ -13,32 +13,32 @@
     {
       "packageName": "@szewtwin/viewer-react",
       "projectFolder": "packages/modules/viewer-react",
-      "shouldPublish": true,
-      "reviewCategory": "common"
+      "reviewCategory": "common",
+      "shouldPublish": true
     },
     {
       "packageName": "@szewtwin/desktop-viewer-react",
       "projectFolder": "packages/modules/desktop-viewer-react",
-      "shouldPublish": true,
-      "reviewCategory": "common"
+      "reviewCategory": "common",
+      "shouldPublish": true
     },
     {
       "packageName": "@szewtwin/web-viewer-react",
       "projectFolder": "packages/modules/web-viewer-react",
-      "shouldPublish": true,
-      "reviewCategory": "common"
+      "reviewCategory": "common",
+      "shouldPublish": true
     },
     {
       "packageName": "@szewtwin/desktop-viewer-test",
       "projectFolder": "packages/apps/desktop-viewer-test",
-      "shouldPublish": false,
-      "reviewCategory": "common"
+      "reviewCategory": "common",
+      "shouldPublish": false
     },
     {
       "packageName": "@szewtwin/web-viewer-test",
       "projectFolder": "packages/apps/web-viewer-test",
-      "shouldPublish": false,
-      "reviewCategory": "common"
+      "reviewCategory": "common",
+      "shouldPublish": false
     }
   ]
 }

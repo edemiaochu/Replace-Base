@@ -180,7 +180,7 @@ export const getIVaultAppOptions = (
     options?.hubAccess ??
     new FrontendIVaultsAccess({
       api: {
-        baseUrl: `https://${globalThis.IMJS_URL_PREFIX}api.szewec.com/ivaults`,
+        baseUrl: `https://${globalThis.IVJS_URL_PREFIX}api.szewec.com/ivaults`,
       },
     });
 
@@ -195,7 +195,7 @@ export const getIVaultAppOptions = (
   const realityDataAccess =
     options?.realityDataAccess ??
     new RealityDataAccessClient({
-      baseUrl: `https://${globalThis.IMJS_URL_PREFIX}api.szewec.com/reality-management/reality-data`,
+      baseUrl: `https://${globalThis.IVJS_URL_PREFIX}api.szewec.com/reality-management/reality-data`,
     });
 
   return {

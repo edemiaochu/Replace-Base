@@ -38,7 +38,7 @@ const App = () => {
 
   const desktopInitializerProps = useMemo<DesktopInitializerParams>(
     () => ({
-      clientId: import.meta.env.IMJS_VIEWER_CLIENT_ID ?? "",
+      clientId: import.meta.env.IVJS_VIEWER_CLIENT_ID ?? "",
       rpcInterfaces: viewerRpcs,
       additionalI18nNamespaces: ["szewTwinDesktopViewer"],
       enablePerformanceMonitors: true,

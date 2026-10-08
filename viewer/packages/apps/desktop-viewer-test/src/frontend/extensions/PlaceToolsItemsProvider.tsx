@@ -13,9 +13,9 @@ import {
 import type { IVaultConnection } from "@szewtwin/core-frontend";
 import { IVaultApp } from "@szewtwin/core-frontend";
 
-/** Query the first id returned by an ECSQL statement, or undefined when the query has no rows. */
-async function queryFirstId(ivault: IVaultConnection, ecsql: string): Promise<string | undefined> {
-  for await (const row of ivault.createQueryReader(ecsql)) {
+/** Query the first id returned by an DMSQL statement, or undefined when the query has no rows. */
+async function queryFirstId(ivault: IVaultConnection, dmsql: string): Promise<string | undefined> {
+  for await (const row of ivault.createQueryReader(dmsql)) {
     return row[0] as string;
   }
   return undefined;
