@@ -66,7 +66,7 @@ export interface ViewerSettings {
 
 /** Arguments for ViewerIpc.createNewIVault. */
 export interface CreateNewIVaultArgs {
-  /** The absolute path of the new .bim file. A ".bim" extension is appended if the path has no ".bim"/".ibim" extension. */
+  /** The absolute path of the new .dtw file. A ".dtw" extension is appended if the path has no ".dtw"/".idtw" extension. */
   filePath: string;
   /** Name for the root Subject of the new iVault. Defaults to the file name (without extension). */
   name?: string;

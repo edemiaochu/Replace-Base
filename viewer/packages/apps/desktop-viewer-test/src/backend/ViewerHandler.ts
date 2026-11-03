@@ -71,7 +71,7 @@ class ViewerHandler extends IpcHandler implements ViewerIpc {
   }
 
   /**
-   * Create a new, empty, editable standalone iVault (.bim) file on disk.
+   * Create a new, empty, editable standalone iVault (.dtw) file on disk.
    * @param args
    * @returns
    */

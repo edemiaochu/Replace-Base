@@ -66,7 +66,7 @@ export class SZEWTwinViewerApp {
     const options: OpenDialogOptions = {
       title: SZEWTwinViewerApp.translate("open"),
       properties: ["openFile"],
-      filters: [{ name: "iVaults", extensions: ["ibim", "bim"] }],
+      filters: [{ name: "iVaults", extensions: ["idtw", "dtw"] }],
     };
     const val = await SZEWTwinViewerApp.ipcCall.openFile(options);
 
@@ -116,8 +116,8 @@ export class SZEWTwinViewerApp {
   ): Promise<string | undefined> {
     const options: SaveDialogOptions = {
       title: SZEWTwinViewerApp.translate("saveBriefcase"),
-      defaultPath: `${this._getFileName(iVaultName)}.bim`,
-      filters: [{ name: "iVaults", extensions: ["ibim", "bim"] }],
+      defaultPath: `${this._getFileName(iVaultName)}.dtw`,
+      filters: [{ name: "iVaults", extensions: ["idtw", "dtw"] }],
     };
     const val = await SZEWTwinViewerApp.ipcCall.saveFile(options);
 
@@ -128,7 +128,7 @@ export class SZEWTwinViewerApp {
     const options: SaveDialogOptions = {
       title: SZEWTwinViewerApp.translate("createNewIVault"),
       defaultPath: "NewIVault.dtw",
-      filters: [{ name: "iVaults", extensions: ["ibim", "bim"] }],
+      filters: [{ name: "iVaults", extensions: ["idtw", "dtw"] }],
     };
     const val = await SZEWTwinViewerApp.ipcCall.saveFile(options);
     if (val.canceled || !val.filePath)

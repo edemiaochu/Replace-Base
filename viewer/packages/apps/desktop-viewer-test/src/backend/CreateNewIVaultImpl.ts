@@ -11,13 +11,13 @@ import * as path from "path";
 
 import type { CreateNewIVaultArgs, CreateNewIVaultResult } from "../common/ViewerConfig";
 
-/** Appends a ".bim" extension to `filePath` if it does not already end in ".bim" or ".ibim". */
+/** Appends a ".dtw" extension to `filePath` if it does not already end in ".dtw" or ".idtw". */
 function normalizeFilePath(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
-  return ".bim" === ext || ".ibim" === ext ? filePath : `${filePath}.bim`;
+  return ".dtw" === ext || ".idtw" === ext ? filePath : `${filePath}.dtw`;
 }
 
-/** Creates a new, empty, editable standalone iVault (.bim) file on disk, initialized with a default
+/** Creates a new, empty, editable standalone iVault (.dtw) file on disk, initialized with a default
  * PhysicalModel, SpatialCategory, and spatial view so that the file is immediately usable.
  */
 export function createNewIVault(args: CreateNewIVaultArgs): CreateNewIVaultResult {

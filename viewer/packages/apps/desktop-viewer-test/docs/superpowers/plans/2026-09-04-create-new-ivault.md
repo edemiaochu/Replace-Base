@@ -209,7 +209,7 @@ export async function selectSaveFileName(): Promise<string | undefined> {
     const opts: SaveDialogOptions = {
       title: "Create New iVault",
       defaultPath: "NewIVault.dtw",
-      filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }],
+      filters: [{ name: "iVaults", extensions: ["dtw", "idtw"] }],
     };
     const val = await ElectronApp.dialogIpc.showSaveDialog(opts);
     return val.canceled ? undefined : val.filePath;

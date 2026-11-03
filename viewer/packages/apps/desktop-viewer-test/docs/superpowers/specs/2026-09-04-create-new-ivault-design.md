@@ -101,7 +101,7 @@ public async createNewIVault(args: CreateNewIVaultArgs): Promise<string> {
 
 **`src/frontend/FileOpen.ts`**：新增 `selectSaveFileName()`：
 
-- Electron：`ElectronApp.dialogIpc.showSaveDialog({ title: "Create New iVault", defaultPath: "NewIVault.dtw", filters: [{ name: "iVaults", extensions: ["bim", "ibim"] }] })`；取消返回 undefined。
+- Electron：`ElectronApp.dialogIpc.showSaveDialog({ title: "Create New iVault", defaultPath: "NewIVault.dtw", filters: [{ name: "iVaults", extensions: ["dtw", "idtw"] }] })`；取消返回 undefined。
 - 非 Electron：返回 undefined（调用方给出提示）。
 
 **`src/frontend/Surface.ts`**：
